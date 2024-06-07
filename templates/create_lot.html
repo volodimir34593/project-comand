@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Створити лот</h1>
+<form method="post" enctype="multipart/form-data">
+  <label for="lot_name">Назва лоту</label>
+  <input type="text" id="lot_name" name="lot_name" required>
+  <label for="lot_description">Опис лоту</label>
+  <textarea id="lot_description" name="lot_description" required></textarea>
+  <label for="lot_start_price">Стартова ціна</label>
+  <input type="number" id="lot_start_price" name="lot_start_price" step="0.01" required>
+  <label for="lot_image">Фотографія лоту</label>
+  <input type="file" id="lot_image" name="lot_image" accept="image/*">
+  <button type="submit">Створити лот</button>
+</form>
+{% endblock %}

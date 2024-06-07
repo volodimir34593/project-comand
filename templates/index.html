@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Список лотів</h1>
+{% if lots %}
+<div class="grid-container">
+  {% for lot in lots %}
+  <div class="grid-item">
+    <h2>{{ lot.name }}</h2>
+    {% if lot.image_url %}
+    <img src="{{ lot.image_url }}" alt="{{ lot.name }}" width="200">
+    {% endif %}
+    <p>{{ lot.description }}</p>
+    <p>Стартова ціна: ${{ lot.start_price }}</p>
+    <p>Власник: {{ lot.owner }}</p>
+    <p>Створено: {{ lot.created_at }}</p>
+    {% if session['username'] == lot.owner %}
+    <form action="{{ url_for('delete_lot', lot_id=loop.index0) }}" method="post" style="display:inline;">
+      <button type="submit">Видалити</button>
+    </form>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p>Немає активних лотів.</p>
+{% endif %}
+{% endblock %}
