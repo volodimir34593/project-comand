@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style_2.css') }}">
+{% endblock %}
+
+{% block content %}
+<h1>Список лотів</h1>
+{% if lots %}
+<div class="grid-container">
+  {% for lot in lots %}
+  <div class="grid-item">
+    {% if lot.image_urls %}
+    <img src="{{ lot.image_urls[0] }}" alt="{{ lot.name }}" width="200">
+    {% endif %}
+    <a href="{{ url_for('item_page', item_id=lot.id) }}">{{ lot.name }}</a>
+    <p>Стартова ціна: ${{ lot.start_price }}</p>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p>Немає активних лотів.</p>
+{% endif %}
+{% endblock %}

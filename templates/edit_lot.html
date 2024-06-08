@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% endblock %}
+
+{% block content %}
+<h1>Редагування лота</h1>
+<form method="post" enctype="multipart/form-data" id="lot_form">
+    <label for="lot_name">Назва лота:</label><br>
+    <input type="text" id="lot_name" name="lot_name" value="{{ lot.name }}"><br>
+    <label for="lot_description">Опис:</label><br>
+    <textarea id="lot_description" name="lot_description">{{ lot.description }}</textarea><br>
+    <label for="lot_start_price">Стартова ціна:</label><br>
+    <input type="number" id="lot_start_price" name="lot_start_price" value="{{ lot.start_price }}"><br><br>
+    <label for="lot_images">Зображення:</label><br>
+    <div id="file_inputs">
+        {% if not lot.image_urls %}
+            <input type="file" id="lot_images_0" name="lot_images[]" accept="image/*" multiple onchange="showPreview(this.files)"><br>
+        {% endif %}
+    </div>
+    <button type="button" onclick="addFileInput()">Додати файл</button>
+    <div id="preview_images">
+        {% if lot.image_urls %}
+            {% for image_url in lot.image_urls %}
+                <div class="preview_image">
+                    <img src="{{ image_url }}" alt="Фото лота" style="max-width: 200px; max-height: 200px;">
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div><br><br>
+    <h2>Фото:</h2>
+    <button type="submit">Зберегти зміни</button>
+</form>
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" name="delete_images" value="true">
+    <button type="submit">Видалити всі фото</button>
+</form>
+
+<script>
+function addFileInput() {
+    var fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.name = "lot_images[]";
+    fileInput.accept = "image/*";
+    fileInput.multiple = true;
+    fileInput.addEventListener('change', function(event) {
+        showPreview(event.target.files);
+    });
+    var fileInputsContainer = document.getElementById("file_inputs");
+    fileInputsContainer.appendChild(fileInput);
+    
+    var inputCount = fileInputsContainer.getElementsByTagName("input").length;
+    fileInput.id = "lot_images_" + inputCount;
+}
+
+function showPreview(files) {
+    var previewContainer = document.getElementById("preview_images");
+    previewContainer.innerHTML = '';  // Clear existing previews
+
+    for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+            var img = document.createElement("img");
+            img.src = e.target.result;
+            img.style.maxWidth = "200px"; // Set maximum image width
+            img.style.maxHeight = "200px"; // Set maximum image height
+            var div = document.createElement("div");
+            div.className = "preview_image";
+            div.appendChild(img);
+            previewContainer.appendChild(div);
+        }
+
+        reader.readAsDataURL(file);
+    }
+}
+
+document.getElementById("lot_form").addEventListener("submit", function(event) {
+    var fileInputs = document.querySelectorAll('[name="lot_images[]"]');
+    var hasNewFiles = Array.from(fileInputs).some(function(input) {
+        return input.files && input.files.length > 0;
+    });
+    if (!hasNewFiles && !document.getElementById("preview_images").innerHTML) {
+        event.preventDefault(); // Cancel form submission
+        alert("Будь ласка, оберіть файл або залиште існуючі фото.");
+    }
+});
+</script>
+{% endblock %}

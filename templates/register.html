@@ -1,14 +1,64 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style_2.css') }}">
+{% endblock %}
+
 {% block content %}
-<h1>Реєстрація</h1>
-<form method="post">
-  <label for="username">Ім'я користувача</label>
-  <input type="text" id="username" name="username">
-  
-  <label for="password">Пароль</label>
-  <input type="password" id="password" name="password">
-  
-  <button type="submit">Зареєструватися</button>
-</form>
+<div class="container">
+    <h1>Реєстрація</h1>
+    <form method="post">
+        <div class="form-group">
+            <label for="last_name">Прізвище</label>
+            <input type="text" class="form-control" id="last_name" name="last_name" required>
+        </div>
+        <div class="form-group">
+            <label for="first_name">Ім'я</label>
+            <input type="text" class="form-control" id="first_name" name="first_name" required>
+        </div>
+        <div class="form-group">
+            <label for="country_code">Країна</label>
+            <select class="form-control" id="country_code" name="country_code" required onchange="updatePhoneNumber()">
+                <option value="+1">США (+1)</option>
+                <option value="+44">Великобританія (+44)</option>
+                <option value="+380">Україна (+380)</option>
+                <!-- Додайте більше країн за потреби -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="phone_number">Номер телефону</label>
+            <input type="text" class="form-control" id="phone_number" name="phone_number" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Імейл</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="username">Ім'я користувача</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="password_confirm">Підтвердження паролю</label>
+            <input type="password" class="form-control" id="password_confirm" name="password_confirm" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Зареєструватися</button>
+        {% if error %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endif %}
+    </form>
+</div>
+
+<script>
+function updatePhoneNumber() {
+    var countryCode = document.getElementById('country_code').value;
+    var phoneNumberInput = document.getElementById('phone_number');
+    phoneNumberInput.value = countryCode;
+}
+</script>
 {% endblock %}

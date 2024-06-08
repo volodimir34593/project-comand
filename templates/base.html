@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Аукціонний сайт</title>
+  {% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  {% endblock %}
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <header class="p-3 bg-dark text-white custom-header">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none logo-link">
+          <img src="{{ url_for('static', filename='logo.png') }}" style="max-width: 100px; max-height: 50px;">
+        </a>
+        
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="{{ url_for('index') }}" class="nav-link px-2 text-secondary">Головна</a></li>
+          <li><a href="{{ url_for('create_lot') }}" class="nav-link px-2 text-white">Створити лот</a></li>
+          <li><a href="{{ url_for('about') }}" class="nav-link px-2 text-white">Про нас</a></li>
+        </ul>
+
+        <form id="searchForm" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 ms-3" role="search"> <!-- Додано клас ms-3 -->
+          <input id="searchInput" type="search" class="form-control form-control-dark text-white bg-dark" placeholder="Search..." aria-label="Search">
+        </form>
+
+        <div class="text-end">
+          {% if session.logged_in %}
+            <a href="{{ url_for('logout') }}">
+              <button type="button" class="btn btn-outline-light me-2">Вийти</button>
+            </a>
+          {% else %}
+            <a href="{{ url_for('login') }}">
+              <button type="button" class="btn btn-outline-light me-2">Увійти</button>
+            </a>
+            <a href="{{ url_for('register') }}">
+              <button type="button" class="btn btn-warning">Зареєструватися</button>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <div class="footer">
+    <footer>
+      <p>&copy; 2024 Сайт Аукціону. Всі права захищені.</p>
+    </footer>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#imageModal').on('show.bs.modal', function(event) {
+        var image = $(event.relatedTarget);
+        var imageUrl = image.data('image-url');
+        $('#modalImage').attr('src', imageUrl);
+      });
+
+      $('#searchForm').on('submit', function(event) {
+        event.preventDefault();
+        var searchQuery = $('#searchInput').val();
+        // Додайте код для виконання пошуку з використанням значення searchQuery
+        console.log("Виконання пошуку за запитом:", searchQuery);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style_lots.css') }}">
+{% endblock %}
+
+{% block content %}
+{% if lots %}
+<a href="http://127.0.0.1:5000/" class="btn btn-primary mb-3"></a>
+<div class="custom-grid-container">
+  {% for lot in lots %}
+  <div class="custom-grid-item d-flex">
+    
+    <!-- Зображення зліва -->
+    {% if lot.image_urls %}
+    <div id="carousel-{{ lot.id }}" class="carousel slide mr-3" data-ride="false" style="width: 600px; height: 600px;">
+      <ol class="carousel-indicators">
+        {% for image_url in lot.image_urls %}
+        <li data-target="#carousel-{{ lot.id }}" data-slide-to="{{ loop.index0 }}" {% if loop.first %} class="active"{% endif %}></li>
+        {% endfor %}
+      </ol>
+      <div class="carousel-inner">
+        {% for image_url in lot.image_urls %}
+        <div class="carousel-item {% if loop.first %}active{% endif %}">
+          <img src="{{ image_url }}" class="d-block w-100" alt="{{ lot.name }}" style="object-fit: contain; height: 600px;" data-toggle="modal" data-target="#imageModal" data-image-url="{{ image_url }}">
+        </div>
+        {% endfor %}
+      </div>
+      <a class="carousel-control-prev" href="#carousel-{{ lot.id }}" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Попередній</span>
+      </a>
+      <a class="carousel-control-next" href="#carousel-{{ lot.id }}" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Наступний</span>
+      </a>
+    </div>
+    {% endif %}
+
+    <!-- Інформація праворуч -->
+    <div class="lot-info">
+      <a href="{{ url_for('item_page', item_id=lot.id) }}">{{ lot.name }}</a>
+      <p>{{ lot.description }}</p>
+      <p>Стартова ціна: ${{ lot.start_price }}</p>
+      <p>Власник: {{ lot.owner }}</p>
+      <p>Створено: {{ lot.created_at }}</p>
+      {% if session['username'] == lot.owner %}
+        <form action="{{ url_for('delete_lot', item_id=lot.id) }}" method="post" style="display:inline;">
+          <button type="submit">Видалити</button>
+        </form>
+        <a href="{{ url_for('edit_lot', item_id=lot.id) }}">Редагувати</a>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Модальне вікно для зображень -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel">Зображення</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img id="modalImage" src="" class="img-fluid" alt="Зображення">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CSS стилі для збільшення модального вікна та зображення -->
+<style>
+.modal-dialog {
+    max-width: 80%; /* Максимальна ширина модального вікна */
+}
+.modal-body {
+    text-align: center; /* Центрування зображення в модальному вікні */
+}
+#modalImage {
+    max-width: 100%; /* Максимальна ширина зображення */
+    height: auto; /* Збереження пропорцій */
+}
+.custom-grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.custom-grid-item {
+    display: flex;
+    width: 100%;
+}
+.custom-grid-item img {
+    width: 400px;
+    height: 400px;
+    object-fit: contain;
+}
+</style>
+
+{% else %}
+<p>Немає активних лотів.</p>
+{% endif %}
+{% endblock %}

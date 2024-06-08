@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Створити лот</h1>
+<form method="post" enctype="multipart/form-data" id="lot_form">
+  <label for="lot_name">Назва лоту</label>
+  <input type="text" id="lot_name" name="lot_name" required>
+  <label for="lot_description">Опис лоту</label>
+  <textarea id="lot_description" name="lot_description" required></textarea>
+  <label for="lot_start_price">Стартова ціна</label>
+  <input type="number" id="lot_start_price" name="lot_start_price" step="0.01" required>
+  <label for="lot_images">Фотографії лоту</label>
+  <div id="file_inputs">
+    <input type="file" id="lot_images_0" name="lot_images[]" accept="image/*" required>
+  </div>
+  <button type="button" onclick="addFileInput()">Додати файл</button>
+  <button type="submit">Створити лот</button>
+</form>
+
+<div id="preview_images"></div>
+
+<script>
+function addFileInput() {
+  var fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.name = "lot_images[]";
+  fileInput.accept = "image/*";
+  var fileInputsContainer = document.getElementById("file_inputs");
+  fileInputsContainer.appendChild(fileInput);
+
+  var inputCount = fileInputsContainer.getElementsByTagName("input").length;
+  fileInput.id = "lot_images_" + inputCount;
+}
+
+document.getElementById("lot_form").addEventListener("change", function(event) {
+  var previewContainer = document.getElementById("preview_images");
+  previewContainer.innerHTML = ""; // Очистити попередній перегляд перед додаванням нових зображень
+
+  var files = event.target.files;
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      var img = document.createElement("img");
+      img.src = e.target.result;
+      img.style.maxWidth = "200px"; // Задати максимальну ширину зображення
+      img.style.maxHeight = "200px"; // Задати максимальну висоту зображення
+      previewContainer.appendChild(img);
+    }
+
+    reader.readAsDataURL(file);
+  }
+});
+</script>
+{% endblock %}
