@@ -1,0 +1,153 @@
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  nav li {
+    margin-right: 20px;
+  }
+  
+  nav a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  main {
+    padding: 20px;
+  }
+  
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Забезпечує, щоб сторінка була мінімальної висоти вікна браузера */
+    position: relative;
+  }
+  
+  .nav-link {
+    font-size: 125%; /* збільшуємо розмір тексту до 20px */
+  }
+  
+  footer {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin-left: 20%; /* Додає відступ між навігацією і формою пошуку */
+  }
+  
+  label {
+    margin-top: 10px;
+  }
+  
+  input,
+  textarea {
+    padding: 5px;
+  }
+  
+  button {
+    margin-top: 10px;
+    padding: 5px 10px;
+  }
+  
+  .btn-primary {
+    background-image: url('button.png');
+      background-size: cover; /* Зображення покриває всю кнопку */
+      background-position: center; /* Центрування зображення */
+      width: 50px; /* Ширина кнопки */
+      height: 50px; /* Висота кнопки */
+  }
+
+  .grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Відстань між елементами */
+    padding: 20px;
+  }
+  
+  .grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: white;
+    text-align: center;
+    position: relative;
+    width: 220px; /* Ширина елемента */
+  }
+  
+  .grid-item img {
+    max-width: 100%;
+    border-radius: 5px;
+    margin-bottom: 10px; /* Відстань між зображенням та назвою */
+  }
+  
+  .grid-item a {
+    font-size: 1.2em;
+    color: #333;
+    text-decoration: none;
+    margin: 10px 0; /* Відстань між назвою та ціною */
+    display: inline-block;
+  }
+  
+  .grid-item p {
+    margin-top: auto; /* Підняти ціну до низу */
+    margin: 10px 0;
+    color: #555;
+  }
+  
+  .grid-item .top-sale {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: orange;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    font-weight: bold;
+  }
+  
+  .grid-item .discount {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 0.9em;
+  }
+  
+  .grid-item .new-price {
+    color: red;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+
+  .carousel {
+    width: 500px;
+    height: 500px;
+    object-fit: contain;
+    margin-left: 10%; /* Доданий відступ від лівого краю */
+}
+
+.custom-grid-item .lot-info {
+    margin-left: 5%; /* Доданий відступ від фото */
+}
+
+.lot-info p {
+    font-size: 150%;
+}
+
+.lot-info a {
+    font-size: 150%;
+    color: black;
+}
